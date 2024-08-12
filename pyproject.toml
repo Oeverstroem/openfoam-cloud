@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openfoamcloud"
+version = "0.0.1"
+dependencies = [
+    "requests",
+    'importlib-metadata; python_version>"3.8"',
+    "pydantic",
+    "google-cloud-batch"
+]
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.mypy]
+strict = true

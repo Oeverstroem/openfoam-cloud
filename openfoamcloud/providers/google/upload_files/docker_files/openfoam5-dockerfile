@@ -1,0 +1,22 @@
+FROM openfoam/openfoam5-paraview54
+
+#docker run -it -u 1000:1000 -e XAUTHORITY=/home/openfoam/.Xauthority -v $XAUTHORITY:/home/openfoam/.Xauthority -v .:/home/openfoam openfoam/openfoam5-paraview54
+
+#ENV BASE_CASE_NAME="test_project"
+#ENV BASE_CASE_DIRECTORY=./base
+#ENV CASE_DIRECTORY=./base/case_1
+#ENV RUN_COMMAND="cd ./Library \n wmake libso \n cd .. \n cd ./Solver \n wmake \n cd .. \n MyEstaticChargeDensityDivFoam5_volfrac_homog_V4_1 \n pvpython volFrac_Coating_CarRim_V1.py"
+
+RUN echo '#!/bin/bash' >> /tmp/entrypoint.sh
+RUN echo 'source /opt/openfoam5/etc/bashrc' >> /tmp/entrypoint.sh
+RUN echo 'cp -r ${BASE_CASE_DIRECTORY}/${BASE_CASE_NAME} ${CASE_DIRECTORY}' >> /tmp/entrypoint.sh
+RUN echo 'cd ${CASE_DIRECTORY}' >> /tmp/entrypoint.sh
+RUN echo 'cd ${BASE_CASE_NAME}' >> /tmp/entrypoint.sh
+RUN echo 'ls -alh && pwd' >> /tmp/entrypoint.sh
+RUN echo $RUN_COMMAND >> /tmp/entrypoint.sh
+RUN echo "echo 'DONE'" >> /tmp/entrypoint.sh
+RUN chmod +x /tmp/entrypoint.sh
+
+SHELL ["/bin/bash", "-c"]
+
+ENTRYPOINT ["/tmp/entrypoint.sh"]
